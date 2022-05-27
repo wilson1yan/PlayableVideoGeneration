@@ -1,7 +1,7 @@
 # Logging parameters
 logging:
   # Name which which the run will be logged
-  run_name: "02_breakout"
+  run_name: "02_breakout_gumbel_hard_no_anneal_obs_no_pretrain"
 
   # Directory where main results are saved
   output_root: "results"
@@ -11,7 +11,7 @@ logging:
 # Dataset parameters
 data:
   # Dataset path
-  data_root: "data/breakout_v2_160_ours"
+  data_root: "data/breakout"
   # Crop to apply to each frame [left_index, upper_index, right_index, lower_index]
   crop: [0, 0, 160, 208]
   # Number of distinct actions present in the dataset
@@ -48,7 +48,7 @@ model:
   # Action recognition network parameters
   action_network:
     use_gumbel: True
-    hard_gumbel: False
+    hard_gumbel: True
     ensamble_size: 1
     # Temperature to use in Gumbel-Softmax for action sampling
     gumbel_temperature: 1.0
@@ -71,7 +71,7 @@ training:
   weight_decay: 0.000001
 
   # Number of steps to use for pretraining
-  pretraining_steps: 3000
+  pretraining_steps: 0
   # Whether to avoid backpropagation of gradients into the representation network during pretraining
   pretraining_detach: False
   # Steps at which to switch learning rate
@@ -93,7 +93,7 @@ training:
   # Number of ground truth observations in each sequence to use at the beginning of training
   gumbel_temperature_start: 1.0
   # Number of real observations in each sequence to use at the end of the annealing period
-  gumbel_temperature_end: 0.4
+  gumbel_temperature_end: 1.0
   # Length in steps of the annealing period
   gumbel_temperature_steps: 20000
 
