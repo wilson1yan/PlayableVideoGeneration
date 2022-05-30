@@ -2,6 +2,7 @@
 logging:
   # Name which which the run will be logged
   run_name: "02_breakout_gumbel_hard_no_anneal_obs_no_pretrain"
+  #  run_name: "02_breakout"
 
   # Directory where main results are saved
   output_root: "results"

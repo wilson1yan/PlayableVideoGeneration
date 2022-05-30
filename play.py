@@ -71,7 +71,7 @@ if __name__ == "__main__":
     model.eval()
     dataloader = evaluator.dataloader # Uses validation dataloader
     #dataset_index = int(input(f"- Insert start sample index in [0, {len(dataloader)}): "))
-    dataset_index = 0
+    dataset_index = 1
 
 
     # Erases and creates the new directory
@@ -93,10 +93,10 @@ if __name__ == "__main__":
     video_saver = VideoSaver()
     input_helper = InputHelper(interactive=False)
     window_name = "rendered_frame"
-    cv.namedWindow(window_name, cv.WND_PROP_FULLSCREEN)
-    cv.setWindowProperty(window_name, cv.WND_PROP_FULLSCREEN, cv.WINDOW_FULLSCREEN)
+    #cv.namedWindow(window_name, cv.WND_PROP_FULLSCREEN)
+    #cv.setWindowProperty(window_name, cv.WND_PROP_FULLSCREEN, cv.WINDOW_FULLSCREEN)
 
-    while True:
+    for current_action in [0, 1, 2]:
         # Gets the first batch
         for current_batches in dataloader:
             break
@@ -134,7 +134,6 @@ if __name__ == "__main__":
             frame_timestamps = [] # Timestamps at which each frame started being visualized on the screen
             actions = [] # Sequence of actions used to generate the current sequence
             begin_time = 0
-            current_action = None
             while True:
                 # Display the frame
                 permuted_frame = (((current_frame + 1) / 2).permute(1, 2, 0).cpu().numpy() * 255).astype(np.uint8)
@@ -144,7 +143,7 @@ if __name__ == "__main__":
                 display_frame = cv.resize(color_corrected_frame, (color_corrected_frame.shape[1] * zoom_factor, color_corrected_frame.shape[0] * zoom_factor))
                 if current_action is not None:
                     display_frame = video_saver.draw_text_on_frame(display_frame, (40, 20), str(current_action + 1), pointsize=128)
-                cv.imshow(window_name, display_frame)
+                #cv.imshow(window_name, display_frame)
                 #cv.waitKey(1)
 
                 # Start the timer at the first frame
@@ -161,22 +160,24 @@ if __name__ == "__main__":
                 pil_image.save(os.path.join(current_output_directory, f"{current_frame_idx}.{image_extension}"))
 
                 # Asks for input until a correct one is received
-                success = False
-                while not success:
-                    success = False
-                    try:
-                        print(f"\n- Insert current action in [1, {config['data']['actions_count']}], 0 to reset: ")
-                        #current_action = int(input_helper.read_character())
-                        current_action = int(cv.waitKey(0)) - ord('0')
-
-                        current_action -= 1 # Puts the action in the expected range for the model
-                        if current_action != -1 and (current_action < 0 or current_action >= config['data']['actions_count']):
-                            success = False
-                        else:
-                            success = True
-                    except Exception as e:
-                        time.sleep(0.1)
-                        success = False
+#                success = False
+#                while not success:
+#                    success = False
+#                    try:
+#                        print(f"\n- Insert current action in [1, {config['data']['actions_count']}], 0 to reset: ")
+#                        #current_action = int(input_helper.read_character())
+#                        current_action = int(cv.waitKey(0)) - ord('0')
+#
+#                        current_action -= 1 # Puts the action in the expected range for the model
+#                        if current_action != -1 and (current_action < 0 or current_action >= config['data']['actions_count']):
+#                            success = False
+#                        else:
+#                            success = True
+#                    except Exception as e:
+#                        time.sleep(0.1)
+#                        success = False
+                if current_frame_idx == 10:
+                    current_action = -1
 
                 # Request exit
                 if current_action == -1:
