@@ -1,7 +1,8 @@
 # Logging parameters
 logging:
   # Name which which the run will be logged
-  run_name: "02_breakout"
+  run_name: "02_breakout_clean"
+  #  run_name: "02_breakout"
 
   # Directory where main results are saved
   output_root: "results"
@@ -48,7 +49,7 @@ model:
   # Action recognition network parameters
   action_network:
     use_gumbel: True
-    hard_gumbel: False
+    hard_gumbel: True
     ensamble_size: 1
     # Temperature to use in Gumbel-Softmax for action sampling
     gumbel_temperature: 1.0
@@ -71,7 +72,7 @@ training:
   weight_decay: 0.000001
 
   # Number of steps to use for pretraining
-  pretraining_steps: 3000
+  pretraining_steps: 0
   # Whether to avoid backpropagation of gradients into the representation network during pretraining
   pretraining_detach: False
   # Steps at which to switch learning rate
@@ -93,7 +94,7 @@ training:
   # Number of ground truth observations in each sequence to use at the beginning of training
   gumbel_temperature_start: 1.0
   # Number of real observations in each sequence to use at the end of the annealing period
-  gumbel_temperature_end: 0.4
+  gumbel_temperature_end: 1.0
   # Length in steps of the annealing period
   gumbel_temperature_steps: 20000
 
@@ -107,7 +108,7 @@ training:
     # Number of observations that each batch sample possesses
     observations_count: 9
     # Number of observations that the first batch possesses
-    observations_count_start: 7
+    observations_count_start: 9
     # Length in steps of the annealing period
     observations_count_steps: 15000
 
@@ -125,19 +126,19 @@ training:
     # Weight for the reconstruction loss during pretraining
     reconstruction_loss_lambda_pretraining: 1.0
     # Weight for the perceptual loss
-    perceptual_loss_lambda: 1.0
+    perceptual_loss_lambda: 0.0
     # Weight for the perceptual loss during pretraining
-    perceptual_loss_lambda_pretraining: 1.0
+    perceptual_loss_lambda_pretraining: 0.0
     # Weight for the action divergence between plain and transformed sequences
     action_divergence_lambda: 0.0
     # Weight for the action divergence between plain and transformed sequences during pretraining
     action_divergence_lambda_pretraining: 0.0
     # Weight for state reconstruction loss
-    states_rec_lambda: 0.2
+    states_rec_lambda: 0.0
     # Weight for state reconstruction loss during pretraining
-    states_rec_lambda_pretraining: 0.2
+    states_rec_lambda_pretraining: 0.
     # Weight for state reconstruction loss during pretraining
-    hidden_states_rec_lambda_pretraining: 1.0
+    hidden_states_rec_lambda_pretraining: 0.0
     # Weights for the action distribution entropy loss
     entropy_lambda: 0.0
     # Weights for the action distribution entropy loss during pretraining
